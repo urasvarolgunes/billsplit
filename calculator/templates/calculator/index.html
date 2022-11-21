@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- This script got from frontendfreecode.com -->
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+body {
+    background: #0083B0;
+    background: -webkit-linear-gradient(to right, #0083B0, #00B4DB);
+    background: linear-gradient(to right, #0083B0, #00B4DB);
+    min-height: 100vh;
+}
+
+.form-control::placeholder {
+    font-style: italic;
+    font-size: 0.85rem;
+    color: rgb(104, 57, 19);
+}
+
+h1 {
+	margin: 1em 0 0.5em 0;
+	color: #343434;
+	font-weight: normal;
+	font-family: 'Ultra', sans-serif;   
+	font-size: 2vw;
+	line-height: 1vh;
+	text-transform: uppercase;
+}
+
+</style>
+
+</head>
+
+<body>
+<div class="container py-1">
+    
+    <div class="row">
+        <div class="col-xs-3 mx-auto">
+
+            <h1> Bill Split </h1>
+
+            <div class="card rounded-0 border-0 shadow">
+                <div class="card-body p-5">
+                
+                    <!--  Bootstrap table-->
+                    <div class="table-responsive" enctype="multipart/form-data">
+                        <form method="post">
+                        {% csrf_token %}
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Item</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Who</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td> <input type='text' value='Burger' name="item_name" required="required" placeholder="Item name?" /> </td>
+                                    <td> <input type='number' value='20.00' name="price" required="required" step="0.01" min="0.0" placeholder="Total price?"/> </td>
+                                    <td> <input type='text' value='Jack' name="people" required="required" placeholder="who?"/> </td>
+                                    <td><button class="btn btn-danger rounded-0" id ="deleteRow"><i class="fa fa-trash"></i></button</td>
+                                </tr>
+                                <tr>
+                                    <td> <input type='text' value='Pizza' name="item_name" required="required"/> </td>
+                                    <td> <input type='number' value='20.00' name="price" required="required" step="0.01" min="0.0"/> </td>
+                                    <td> <input type='text' value='Jill, Mark' name="people" required="required"/> </td>
+                                    <td><button class="btn btn-danger rounded-0" id ="deleteRow"><i class="fa fa-trash"></i></button</td>
+                                </tr>
+                                
+                                {% for i in "x"|rjust:"5" %}
+                                <tr>
+                                    <td> <input type='text' value='' name="item_name" required="required"/> </td>
+                                    <td> <input type='number' value='' name="price" required="required" step="0.01" min="0.0"/> </td>
+                                    <td> <input type='text' value='' name="people" required="required"/> </td>
+                                    <td><button class="btn btn-danger rounded-0" id ="deleteRow"><i class="fa fa-trash"></i></button</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        
+                        <!-- Add rows button-->
+                        <a class="btn btn-secondary rounded-0 btn-block" style="margin-bottom: 2vh;" id="insertRow" href="#">Add new row</a>
+                        <a class="" style="margin-bottom: 2vh;"> Total After Tax and Tip:
+                            <input type="number" name="total_price" required="required" min="0.0" step="0.01"/>
+                        </a>
+                        <input class="btn btn-primary rounded-0 btn-block" type="submit" name="submit" value="Calculate Shares" />
+                        
+                        </form>
+                        
+                        <h2> Instructions </h2>
+                        <ol>
+                            <li> Note: Do not forget to remove the first two example rows before submitting! </li>
+                            <li> Add (or remove) as many rows as needed using the <b>Add new row</b> button </li>
+                            <li> List all the items on your check, along with the total price of each item. </li>
+                            <li> For each item, enter the name of the person who had it.
+                            <li> For shared items, seperate multiple names using commas <em>(ex: Jill, Mark, Michael)</em>. </li>
+                            <li> Make sure names are consistent across different items. </li>                           
+                            <li> Enter the <b>Total Amount After Tax and Tip</b> and press <b>Calculate Shares</b> </li>
+                            
+                        </ol>
+
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+$(function () {
+
+    // Start counting from the third row
+    var counter = 3;
+
+    $("#insertRow").on("click", function (event) {
+        event.preventDefault();
+
+        var newRow = $("<tr>");
+        var cols = '';
+
+        // Table columns
+        //cols += '<th scrope="row">' + counter + '</th>';
+        cols += '<td><input class="form-control rounded-0" type="text" name="item_name" placeholder="Item name?" required="required"></td>';
+        cols += '<td><input class="form-control rounded-0" type="number" name="price" placeholder="Total price?" required="required" min="0.0" step="0.01"></td>';
+        cols += '<td><input class="form-control rounded-0" type="text" name="people" placeholder="who?" required="required"></td>';
+        cols += '<td><button class="btn btn-danger rounded-0" id ="deleteRow"><i class="fa fa-trash"></i></button</td>';
+
+        // Insert the columns inside a row
+        newRow.append(cols);
+
+        // Insert the row inside a table
+        $("table").append(newRow);
+
+        // Increase counter after each row insertion
+        counter++;
+    });
+
+    // Remove row when delete btn is clicked
+    $("table").on("click", "#deleteRow", function (event) {
+        $(this).closest("tr").remove();
+        counter -= 1
+    });
+});
+</script>
+
+</body>
+</html>

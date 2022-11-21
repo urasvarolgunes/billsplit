@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- This script got from frontendfreecode.com -->
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+
+h1 {
+	margin: 1em 0 0.5em 0;
+	color: #343434;
+	font-weight: normal;
+	font-family: 'Ultra', sans-serif;   
+	font-size: 2vw;
+	line-height: 1vh;
+	text-transform: uppercase;
+}
+
+body {
+    background: #0083B0;
+    background: -webkit-linear-gradient(to right, #0083B0, #00B4DB);
+    background: linear-gradient(to right, #0083B0, #00B4DB);
+    min-height: 100vh;
+}
+
+.form-control::placeholder {
+    font-style: italic;
+    font-size: 0.85rem;
+    color: #aaa;
+}
+
+h1 {
+	margin: 1em 0 0.5em 0;
+	color: #343434;
+	font-weight: normal;
+	font-family: 'Ultra', sans-serif;   
+	font-size: 2vw;
+	line-height: 1vh;
+	text-transform: uppercase;
+}
+</style>
+
+<body>
+    <div class="container py-1">
+
+        <div class="row">
+            <div class="col-xs-3 mx-auto">
+    
+                <h1> Summary </h1>  
+    
+                <div class="card rounded-0 border-0 shadow">
+                    <div class="card-body p-5">
+                    
+                        <div class="list-group">
+                            {% for person, total in finals.items %}
+                    
+                            <div class="dropdown">
+                                <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{person}}: ${{total|floatformat:2}}
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                  <a class="dropdown-item" href="#"> {{item_lists|get_item:person|linebreaksbr}} </a>
+                                </div>
+                              </div>
+
+                            {% endfor %}
+                          </div>
+
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>
